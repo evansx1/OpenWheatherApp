@@ -23,5 +23,8 @@
     "express": "^4.17.1",
     "jest": "^26.1.0",
     "openweathermap-node": "^1.1.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }
