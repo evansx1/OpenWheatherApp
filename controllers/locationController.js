@@ -1,12 +1,9 @@
 const weatherService = require("../services/weatherService");
 const LocationService = require("../services/ipLocationService");
-var ip = require("ip")
 const dotenv = require("dotenv");
 dotenv.config();
 
 const myIp = "186.143.199.184";
-// const myIp = ip.address();
-// console.log("my ip: ", myIp);
 
 const getLocationByIp = async (req, res) => {
     const locationInfo = await LocationService.getLocationByIp(myIp);
@@ -25,7 +22,7 @@ const getWeatherByLocation = async (req, res) => {
         weather = await weatherService.getWeatherByCity(locationInfo.data.city);
     }
 
-    console.log(weather.data);
+    console.log("The weather today: ", weather.data);
     res.send(weather.data);
 }; 
 
@@ -40,7 +37,7 @@ const getFiveDaysWeather = async (req, res) => {
         weather = await weatherService.getForecastWeatherByCity(locationInfo.data.city);
     }
 
-    console.log(weather.data);
+    console.log("The weather in the incoming 5 days: ", weather.data);
     res.send(weather.data);
 }; 
 
