@@ -1,32 +1,17 @@
-const locationService = require("../services/locationService");
-const axios = require('axios');
+const weatherService = require("../services/weatherService");
+const LocationService = require("../services/ipLocationService");
 const dotenv = require('dotenv');
 dotenv.config();
 
-const myIp = "8.8.8.8"
+const myIp = "186.143.199.184";
 
-const getLocationByIp = async () => {
-    try {
-      return await axios.get(`https://api.ipfind.com?ip=${myIp}&auth=${process.env.API_FIND_KEY}`)
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
-const getByLocation = async (req, res) => {
-    req.body = {
-        ip: myIp
-    };
-    console.log("this is your request body: ", req.body);
-
-    const myLocation = await getLocationByIp(myIp).then( result => {
-        console.log("data: ", result.data);
-    });
-
-    // const results = await locationService.getWeatherByLocation(req);
-    res.send(myIp);
+const getWeatherByLocation = async (req, res) => {
+    const locationInfo = await LocationService.getLocationByIp(myIp);
+    const weather = await weatherService.getWeatherByCity(locationInfo.data.city);
+    console.log(weather.data);
+    res.send(weather.data);
 };
 
 module.exports = {
-    getByLocation
+    getWeatherByLocation
 };

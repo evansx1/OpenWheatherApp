@@ -3,6 +3,6 @@ const routes = express.Router();
 const locationCtrl = require("../controllers/locationController");
 
 //[GET methods]
-routes.get("/location", locationCtrl.getByLocation);
+routes.get("/location", locationCtrl.getWeatherByLocation);
 
 module.exports = routes;
