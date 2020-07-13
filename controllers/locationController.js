@@ -5,13 +5,28 @@ dotenv.config();
 
 const myIp = "186.143.199.184";
 
-const getWeatherByLocation = async (req, res) => {
+const getLocationByIp = async (req, res) => {
     const locationInfo = await LocationService.getLocationByIp(myIp);
-    const weather = await weatherService.getWeatherByCity(locationInfo.data.city);
+    console.log(locationInfo.data);
+    res.send(locationInfo.data);
+}
+
+const getWeatherByLocation = async (req, res) => {
+    const city = req.params.city;
+    let weather;
+
+    if (city) {
+        weather = await weatherService.getWeatherByCity(city);
+    } else {
+        const locationInfo = await LocationService.getLocationByIp(myIp);
+        weather = await weatherService.getWeatherByCity(locationInfo.data.city);
+    }
+
     console.log(weather.data);
     res.send(weather.data);
-};
+}; 
 
 module.exports = {
+    getLocationByIp,
     getWeatherByLocation
 };
