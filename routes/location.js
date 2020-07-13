@@ -1,6 +1,6 @@
 const express = require("express");
 const routes = express.Router();
-const locationCtrl = require("../controllers/locationController");
+const locationCtrl = require("../handlers/locationHandler");
 
 //[GET methods]
 routes.get("/location", locationCtrl.getLocationByIp);
