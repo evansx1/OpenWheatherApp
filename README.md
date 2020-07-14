@@ -17,3 +17,9 @@ Consult the weather at any location through the IP address or city provided.
     - **Get geolocation by IP address**: http://localhost:{YOUR_PORT}/v1/location
     - **Get current weather by city or current location**: http://localhost:{YOUR_PORT}/v1/current/:{city}?
     - **Get forecast weather for the incoming 5 days by city or current location**: http://localhost:{YOUR_PORT}/v1/forecast:{city}?
+
+## How to run unit test
+
+1. run the following script:
+
+     `npm run test`

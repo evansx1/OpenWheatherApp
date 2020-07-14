@@ -12,7 +12,7 @@ const getLocationByIp = async (req, res) => {
 }
 
 const getWeatherByLocation = async (req, res) => {
-    const city = req.params.city;
+    const {city} = req.params;
     let weather;
 
     if (city) {
@@ -27,7 +27,7 @@ const getWeatherByLocation = async (req, res) => {
 }; 
 
 const getFiveDaysWeather = async (req, res) => {
-    const city = req.params.city;
+    const {city} = req.params;
     let weather;
 
     if (city) {

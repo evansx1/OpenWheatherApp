@@ -1,11 +1,66 @@
-const locationHandler = require('./locationHandler');
-const weatherService = require('../services/weatherService');
-const ipLocationService = require('../services/ipLocationService');
+const locationHandler = require("./locationHandler");
+const weatherService = require("../services/weatherService");
+const ipLocationService = require("../services/ipLocationService");
 
-jest.mock('../services/ipLocationService.js');
-jest.mock('../services/weatherService.js');
+jest.mock("../services/ipLocationService.js");
+jest.mock("../services/weatherService.js");
 
-describe('LocationHandler should', () => {
+describe("LocationHandler should", () => {
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+
+        ipLocationService.getLocationByIp = jest.fn((_) => {
+            return ipLocationResponse;
+        });
+
+        weatherService.getWeatherByCity = jest.fn((_) => {
+            return weatherResponse;
+        });
+
+        weatherService.getForecastWeatherByCity = jest.fn((_) => {
+            return forecastResponse;
+        });
+
+    });
+
+    it("return location by ip", async() => {
+        await locationHandler.getLocationByIp(null , res);
+        expect(ipLocationService.getLocationByIp).toBeCalledWith(myIp);
+        expect(res.send).toBeCalled();
+    });
+
+    it("return the weather in a given city", async() => {
+        await locationHandler.getWeatherByLocation(req ,res);
+        expect(weatherService.getWeatherByCity).toBeCalledWith(req.params.city);
+        expect(res.send).toBeCalled();
+    });
+
+    it("return the weather in a given IP", async() => {
+        req.params.city = "";
+        await locationHandler.getWeatherByLocation(req ,res);
+        expect(ipLocationService.getLocationByIp).toBeCalledWith(myIp);
+        expect(weatherService.getWeatherByCity).toBeCalledWith(ipLocationResponse.data.city);
+        expect(res.send).toBeCalled();
+    });
+
+    it("return the forecast weather in a given city", async() => {
+        req.params.city = "Buenos Aires";
+        await locationHandler.getFiveDaysWeather(req ,res);
+        expect(weatherService.getForecastWeatherByCity).toBeCalledWith(req.params.city);
+        expect(res.send).toBeCalled();
+    });
+
+    it("return the forecast weather in a given IP", async() => {
+        req.params.city = "";
+        await locationHandler.getFiveDaysWeather(req ,res);
+        expect(ipLocationService.getLocationByIp).toBeCalledWith(myIp);
+        expect(weatherService.getForecastWeatherByCity).toBeCalledWith(ipLocationResponse.data.city);
+        expect(res.send).toBeCalled();
+    });
+
+
+    //Mocked values
 
     const ipLocationResponse = {
         data: {
@@ -130,56 +185,4 @@ describe('LocationHandler should', () => {
     }
 
     const myIp = "186.143.199.184";
-
-    beforeEach(() => {
-        jest.clearAllMocks();
-
-        ipLocationService.getLocationByIp = jest.fn((_) => {
-            return ipLocationResponse;
-        });
-
-        weatherService.getWeatherByCity = jest.fn((_) => {
-            return weatherResponse;
-        });
-
-        weatherService.getForecastWeatherByCity = jest.fn((_) => {
-            return forecastResponse;
-        });
-
-    });
-
-    it('return location by ip', async() => {
-        await locationHandler.getLocationByIp(null , res);
-        expect(ipLocationService.getLocationByIp).toBeCalledWith(myIp);
-        expect(res.send).toBeCalled();
-    });
-
-    it('return the weather in a given city', async() => {
-        await locationHandler.getWeatherByLocation(req ,res);
-        expect(weatherService.getWeatherByCity).toBeCalledWith(req.params.city);
-        expect(res.send).toBeCalled();
-    });
-
-    it('return the weather in a given IP', async() => {
-        req.params.city = "";
-        await locationHandler.getWeatherByLocation(req ,res);
-        expect(ipLocationService.getLocationByIp).toBeCalledWith(myIp);
-        expect(weatherService.getWeatherByCity).toBeCalledWith(ipLocationResponse.data.city);
-        expect(res.send).toBeCalled();
-    });
-
-    it('return the forecast weather in a given city', async() => {
-        req.params.city = "Buenos Aires";
-        await locationHandler.getFiveDaysWeather(req ,res);
-        expect(weatherService.getForecastWeatherByCity).toBeCalledWith(req.params.city);
-        expect(res.send).toBeCalled();
-    });
-
-    it('return the forecast weather in a given IP', async() => {
-        req.params.city = "";
-        await locationHandler.getFiveDaysWeather(req ,res);
-        expect(ipLocationService.getLocationByIp).toBeCalledWith(myIp);
-        expect(weatherService.getForecastWeatherByCity).toBeCalledWith(ipLocationResponse.data.city);
-        expect(res.send).toBeCalled();
-    });
 });
