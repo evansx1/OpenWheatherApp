@@ -7,7 +7,7 @@ const myIp = "186.143.199.184";
 
 const getLocationByIp = async (req, res) => {
     const locationInfo = await LocationService.getLocationByIp(myIp);
-    console.log(locationInfo.data);
+    console.log("Location data by ip: ", locationInfo.data);
     res.send(locationInfo.data);
 }
 
@@ -18,7 +18,7 @@ const getWeatherByLocation = async (req, res) => {
     if (city) {
         weather = await weatherService.getWeatherByCity(city);
     } else {
-        const locationInfo = await LocationService.getLocationByIp(myIp);
+        const locationInfo = await LocationService.getLocationByIp(myIp);    
         weather = await weatherService.getWeatherByCity(locationInfo.data.city);
     }
 
