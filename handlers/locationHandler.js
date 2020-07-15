@@ -6,15 +6,19 @@ dotenv.config();
 const myIp = "186.143.199.184";
 
 const getLocationByIp = async (req, res) => {
-    const locationInfo = await LocationService.getLocationByIp(myIp);
-    console.log("Location data by ip: ", locationInfo.data);
-    res.send(locationInfo.data);
+    try {
+        const locationInfo = await LocationService.getLocationByIp(myIp);
+        console.log("Location data by ip: ", locationInfo.data);
+        res.status(200).send(locationInfo.data);
+    } catch (error) {
+        res.status(404).send("Location not found");
+    }
 }
 
 const getWeatherByLocation = async (req, res) => {
     const {city} = req.params;
     let weather;
-
+    
     if (city) {
         weather = await weatherService.getWeatherByCity(city);
     } else {
@@ -23,14 +27,14 @@ const getWeatherByLocation = async (req, res) => {
     }
 
     console.log("The weather today: ", weather.data);
-    res.send(weather.data);
+    res.send(weather.data); 
 }; 
 
 const getFiveDaysWeather = async (req, res) => {
     const {city} = req.params;
     let weather;
 
-    if (city) {
+    if (city) {     
         weather = await weatherService.getForecastWeatherByCity(city);
     } else {
         const locationInfo = await LocationService.getLocationByIp(myIp);

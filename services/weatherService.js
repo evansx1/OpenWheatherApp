@@ -11,7 +11,8 @@ const getWeatherByCity = async (city) => {
     try {
         return await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${units}&APPID=${APPID}`)
       } catch (error) {
-        console.error(error)
+        console.error(error);
+        return error.response;
       }
 };
 
@@ -23,6 +24,7 @@ const getForecastWeatherByCity = async (city) => {
         return await axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=${units}&APPID=${APPID}`)
       } catch (error) {
         console.error(error)
+        return error.response;
       }
 };
 
